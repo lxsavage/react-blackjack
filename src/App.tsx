@@ -152,7 +152,7 @@ export default function App() {
               <hr />
               <h3>
                 Player hand ({playerScore})
-                {playerScore > 21 ? <span className="hand-bust"> !BUST!</span> : ''}
+                {playerScore > 21 ? <span className="hand-bust">&nbsp;!BUST!</span> : ''}
               </h3>
               <div className="hand-display">
                 {playerHand.map((card) =>
@@ -163,7 +163,7 @@ export default function App() {
               <h3>
                 Dealer hand ({state === State.STAND ? dealerScore : '???'})
                 {state === State.STAND && dealerScore > 21
-                  ? <span className="hand-bust"> !BUST!</span>
+                  ? <span className="hand-bust">&nbsp;!BUST!</span>
                   : ''
                 }
               </h3>
