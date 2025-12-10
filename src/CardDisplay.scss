@@ -1,0 +1,16 @@
+.card-body {
+    border: 1px solid black;
+    border-radius: 12px;
+    margin: 6px;
+    width: 60px;
+    height: 60px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    .red {
+        color: red;
+    }
+}
