@@ -148,15 +148,17 @@ export default function App() {
               <button onClick={() => nextRound(playerMoney)} disabled={state != State.STAND}>Next hand</button>
               <button onClick={hit} disabled={state === State.STAND}>Hit</button>
               <button onClick={() => stand(playerScore)} disabled={state === State.STAND}>Stand</button>
-
               <hr />
               <h3>
                 Player hand ({playerScore})
-                {playerScore > 21 ? <span className="hand-bust">&nbsp;!BUST!</span> : ''}
+                {playerScore > 21
+                  ? <span className="hand-bust">&nbsp;!BUST!</span>
+                  : ''
+                }
               </h3>
               <div className="hand-display">
                 {playerHand.map((card) =>
-                  <CardDisplay card={card} />
+                  <CardDisplay key={`pc_${card.suit}_${card.value}`} card={card} />
                 )}
               </div>
               <hr />
@@ -169,15 +171,15 @@ export default function App() {
               </h3>
               <div className="hand-display">
                 {state !== State.STAND && (
-                  dealerHand.map(() =>
-                    <CardDisplay />
+                  dealerHand.map((_, index) =>
+                    <CardDisplay key={`dc_unknown_${index}`} />
                   )
                 )}
                 {state === State.STAND && (
                   !dealerHand.length
                     ? <li>No cards</li>
                     : dealerHand.map((card) =>
-                      <CardDisplay card={card} />
+                      <CardDisplay key={`dc_${card.suit}_${card.value}`} card={card} />
                     )
                 )}
               </div>
