@@ -233,7 +233,6 @@ function App() {
         <>
           <p>You are out of money!</p>
           <button onClick={newGame}>New game</button>
-          <hr />
         </>
       )}
       {playerMoney > 0 && (
@@ -278,9 +277,9 @@ function App() {
               </div>
             </>
           )}
-          <hr />
         </>
       )}
+      <hr />
       <button onClick={() => setLogsCollapsed(!logsCollapsed)}>
         {logsCollapsed ? 'Expand' : 'Collapse'} Logs
       </button>
