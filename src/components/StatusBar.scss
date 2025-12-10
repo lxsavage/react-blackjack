@@ -1,0 +1,39 @@
+.status-bar {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  list-style: none;
+  padding-left: 0;
+
+  li {
+    &:not(:last-child) {
+      border-right: 1px solid black;
+    }
+
+    &.inactive {
+      color: gray;
+    }
+
+    .money-display {
+      &.loss {
+        &::before {
+          content: '-$';
+        }
+
+        color: red;
+      }
+      &.gain {
+        &::before {
+          content: '+$';
+        }
+
+        color: green;
+      }
+    }
+
+    box-sizing: border-box;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+
+}

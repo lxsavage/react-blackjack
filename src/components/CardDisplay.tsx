@@ -1,11 +1,17 @@
-import type { Card } from "./interfaces/Card";
-import { Suit } from "./types/CardSuit";
+import type { Card } from "../interfaces/Card";
+import { Suit } from "../types/CardSuit";
 
 import './CardDisplay.scss';
 
-function CardDisplay(props: { card?: Card }) {
+export default function CardDisplay(props: { card?: Card }) {
   return (
-    <div className="card-body">
+    <div
+      className="card-body"
+      key={
+        props.card
+          ? `cb_${props.card.suit}_${props.card.value}`
+          : 'cb_unknown'
+      }>
       <div className={
         (props.card && (props.card.suit === Suit.HEART || props.card.suit === Suit.DIAMOND))
           ? 'red'
@@ -30,4 +36,3 @@ function CardDisplay(props: { card?: Card }) {
     </div >
   )
 }
-export default CardDisplay;
