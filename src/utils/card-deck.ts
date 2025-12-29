@@ -16,9 +16,7 @@ export function initializeDeck(): Card[] {
   // Shuffle
   let currentPos = deck.length;
   while (currentPos > 0) {
-    const randomPos = Math.floor(Math.random() * currentPos);
-    --currentPos;
-
+    const randomPos = Math.floor(Math.random() * currentPos--);
     const temp = deck[currentPos];
     deck[currentPos] = deck[randomPos];
     deck[randomPos] = temp;
@@ -27,14 +25,17 @@ export function initializeDeck(): Card[] {
   return deck;
 }
 
-export function dealCards(deck: Card[], count: number): {
-  newDeck: Card[],
-  dealtCards: Card[]
+export function dealCards(
+  deck: Card[],
+  count: number,
+): {
+  newDeck: Card[];
+  dealtCards: Card[];
 } {
   const newDeck = [...deck];
   const dealtCards = [];
 
-  for (let i = 0; i < count; i++) {
+  for (let _ = 0; _ < count; _++) {
     const card = newDeck.pop();
     if (!card) break;
     dealtCards.push(card);

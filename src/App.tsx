@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { State, type GameState } from './types/GameState';
 
 import type { Card } from "./interfaces/Card";
@@ -13,26 +13,32 @@ import * as BlackJack from "./utils/blackjack";
 import * as CardDeck from './utils/card-deck';
 
 export default function App() {
-  const [round, setRound] = useState(0);
+  const [round, setRound] = useState(1);
   const [logs, setLogs] = useState<string[]>([]);
 
   const [playerMoney, setPlayerMoney] = useState(0);
 
-  const [state, setState] = useState<GameState>(State.OUT_OF_MONEY)
+  const [state, setState] = useState<GameState>(State.OUT_OF_MONEY);
   const [deck, setDeck] = useState<Card[]>([]);
 
   const [playerBet, setPlayerBet] = useState(0);
   const [roundResult, setRoundResult] = useState(0);
-  const [playerScore, setPlayerScore] = useState<number>(0);
-  const [dealerScore, setDealerScore] = useState<number>(0);
 
   const [playerHand, setPlayerHand] = useState<Card[]>([]);
   const [dealerHand, setDealerHand] = useState<Card[]>([]);
 
+  const playerScore = useMemo(() => {
+    return BlackJack.calculateScore(playerHand);
+  }, [playerHand]);
+
+  const dealerScore = useMemo(() => {
+    return BlackJack.calculateScore(dealerHand);
+  }, [dealerHand]);
+
   function log(message: string) {
     const newLogs = [...logs];
-    console.log(message);
     newLogs.unshift(message);
+    console.log(message);
     setLogs(newLogs);
   }
 
@@ -40,10 +46,6 @@ export default function App() {
     const deck = CardDeck.initializeDeck();
     const newRound = round + 1;
     log('Started hand #' + newRound);
-
-    const { newDeck, dealtCards } = CardDeck.dealCards(deck, 3);
-    const dealerCard = dealtCards[0];
-    const playerCards = dealtCards.slice(1);
 
     setRoundResult(0);
     setPlayerBet(0);
@@ -58,16 +60,13 @@ export default function App() {
       return;
     }
 
-    setPlayerScore(0);
-    setDealerScore(0);
+    const { newDeck, dealtCards } = CardDeck.dealCards(deck, 3);
+    const dealerCard = dealtCards[0];
+    const playerCards = dealtCards.slice(1);
 
     setDeck(newDeck);
-
-    setPlayerHand(dealtCards.slice(1));
-    setPlayerScore(BlackJack.calculateScore(playerCards));
-
-    setDealerHand(dealtCards.slice(0, 1));
-    setDealerScore(BlackJack.calculateScore([dealerCard]))
+    setPlayerHand(playerCards);
+    setDealerHand([dealerCard]);
 
     setRound(newRound);
     setPlayerMoney(newPlayerMoney);
@@ -93,7 +92,6 @@ export default function App() {
     else log('Draw');
 
     setDealerHand(newDealerHand);
-    setDealerScore(newDealerScore);
     setRoundResult(betResult);
   }
 
@@ -105,7 +103,6 @@ export default function App() {
     log(`Player hit, receiving a ${dealtCards[0].value} of ${dealtCards[0].suit}.`)
 
     setPlayerHand(newPlayerHand);
-    setPlayerScore(newPlayerScore);
     setDeck(newDeck);
 
     if (newPlayerScore > 21) {
